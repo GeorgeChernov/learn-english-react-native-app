@@ -1,28 +1,19 @@
 import React from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { WebBrowser } from 'expo';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ListItem, Button, Overlay, Icon, Input, Divider, Header } from 'react-native-elements'
 
-import { MonoText } from '../components/StyledText';
-import { Card, ListItem, Button, Overlay, Icon, Input, Divider, Header } from 'react-native-elements'
+import WordCard from '../components/WordCard';
 
 export default class HomeScreen extends React.Component {
 
   constructor(props) {
-      super(props);
-      this.state = {
-        isVisible: false,
-        wordInEnglish: "",
-        wordInNative: "",
-        items: this._getMockDictionary()
-      };
+    super(props);
+    this.state = {
+      isVisible: false,
+      wordInEnglish: "",
+      wordInNative: "",
+      items: this._getMockDictionary()
+    };
   }
 
   static navigationOptions = {
@@ -33,36 +24,26 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
 
-        <Header 
-          innerContainerStyles={{backgroundColor: "#698FF0"}}
-          outerContainerStyles={{backgroundColor: "#698FF0"}}
-          centerComponent={{ text: 'DICTIONARY', style: { color: '#fff', fontSize: 18 } }} 
-          rightComponent={{ onPress: this._handlePressOnAdd, icon: 'add', color: '#fff' }} 
+        <Header
+          innerContainerStyles={{ backgroundColor: "#698FF0" }}
+          outerContainerStyles={{ backgroundColor: "#698FF0" }}
+          centerComponent={{ text: 'DICTIONARY', style: { color: '#fff', fontSize: 18 } }}
+          rightComponent={{ onPress: this._handlePressOnAdd, icon: 'add', color: '#fff' }}
         />
 
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        {
-          this.state.items.map((word, i) => {
-            return (
-              <Card key={i} containerStyle={{marginLeft: 0, marginRight: 0, marginTop: 2, marginBottom: 2, backgroundColor: '#F8F9FB', borderRadius: 0, borderColor: '#F8F9FB', borderWidth: 0, borderLeftColor: '#698FF0', borderLeftWidth: 6}}>
-                  <View style={styles.user}>
-                    <Text style={{ fontSize: 18, marginBottom: 10, fontWeight: 'bold' }}>{word.eng}</Text>
-                    <Divider style={{ backgroundColor: '#698FF0', opacity: 0.2 }} />
-                    <Text style={{ fontSize: 16, marginTop: 10 }}>{word.rus}</Text>
-                  </View>
-              </Card>
-            );
-          })
-        }
+          {
+            this._getWordCards()
+          }
         </ScrollView>
-        <Overlay isVisible={this.state.isVisible} overlayStyle={{height: 340}}>
-          <View style={{alignItems: 'center', flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-            <Text h2 style={{fontSize: 22, marginTop: 10}}>ADD NEW WORD</Text>
-            <Text style={{fontSize: 18, marginTop: 30}}>Add the new word in English</Text>
-            <Input onChangeText={this._handleTypingWordInEnglish}/>
-            <Text style={{fontSize: 18, marginTop: 30}}>translate to your language</Text>
-            <Input onChangeText={this._handleTypingWordInNative}/>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+        <Overlay isVisible={this.state.isVisible} overlayStyle={{ height: 340 }}>
+          <View style={{ alignItems: 'center', flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
+            <Text h2 style={{ fontSize: 22, marginTop: 10 }}>ADD NEW WORD</Text>
+            <Text style={{ fontSize: 18, marginTop: 30 }}>Add the new word in English</Text>
+            <Input onChangeText={this._handleTypingWordInEnglish} />
+            <Text style={{ fontSize: 18, marginTop: 30 }}>translate to your language</Text>
+            <Input onChangeText={this._handleTypingWordInNative} />
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
               <Button
                 icon={
                   <Icon
@@ -84,7 +65,7 @@ export default class HomeScreen extends React.Component {
                   />
                 }
                 title='CANCEL'
-                buttonStyle={styles.addButton} 
+                buttonStyle={styles.addButton}
                 onPress={this._handlePressOnCancel}
               />
             </View>
@@ -94,7 +75,13 @@ export default class HomeScreen extends React.Component {
     );
   }
 
-  _getMockDictionary (){
+  _getWordCards() {
+    return this._getMockDictionary().map((word, i) => {
+      return <WordCard key={i} eng={word.eng} rus={word.rus}></WordCard>
+    });
+  };
+
+  _getMockDictionary() {
     return [
       {
         eng: "сat",
@@ -127,46 +114,47 @@ export default class HomeScreen extends React.Component {
     ];
   };
 
-  _getEmptyMockDictionary = () =>{
+  _getEmptyMockDictionary = () => {
     return [];
   };
 
-  _handlePressOnAdd = () =>{
+  _handlePressOnAdd = () => {
     this.setState(() => {
-        return { isVisible: true };
+      return { isVisible: true };
     });
   };
 
-  _handlePressOnCancel = () =>{
+  _handlePressOnCancel = () => {
     this.setState(() => {
-        return { isVisible: false };
+      return { isVisible: false };
     });
   };
 
-  _handlePressOnAddOnOverlay = () =>{
+  _handlePressOnAddOnOverlay = () => {
     var eng = this.state.wordInEnglish;
     var native = this.state.wordInNative;
 
-    if(eng && native){
+    if (eng && native) {
       this.setState((prevState) => {
-        return { 
+        return {
           wordInEnglish: "",
           wordInNative: "",
           isVisible: false,
-          items: [...prevState.items, {eng: eng, rus: native}] };
+          items: [...prevState.items, { eng: eng, rus: native }]
+        };
       });
     }
   };
 
-  _handleTypingWordInEnglish = (text) =>{
+  _handleTypingWordInEnglish = (text) => {
     this.setState(() => {
-        return { wordInEnglish: text };
+      return { wordInEnglish: text };
     });
   };
 
-  _handleTypingWordInNative = (text) =>{
+  _handleTypingWordInNative = (text) => {
     this.setState(() => {
-        return { wordInNative: text };
+      return { wordInNative: text };
     });
   };
 }
@@ -200,26 +188,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center',
   },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
   tabBarInfoText: {
     fontSize: 17,
     color: 'rgba(96,100,109, 1)',
@@ -239,7 +207,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2e78b7',
   },
-  addButton:{
+  addButton: {
     marginTop: 30,
     borderRadius: 0,
     backgroundColor: "#698FF0",
