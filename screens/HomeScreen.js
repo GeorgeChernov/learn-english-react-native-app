@@ -29,6 +29,46 @@ export default class HomeScreen extends React.Component {
           rightComponent={{ onPress: this._handlePressOnAdd, icon: 'add', color: '#fff' }}
         />
 
+        <View style={{ height: 180, paddingLeft: 10, backgroundColor: "#698FF0" }}>
+          <View style={{ alignItems: 'center' }}>
+            <Text h2 style={{ fontSize: 18, marginTop: 20, color: '#fff' }}>ADD NEW WORD</Text>
+          </View>
+          <View style={{ flexDirection: 'row', paddingRight: 70 }}>
+            <Text style={{ fontSize: 16, marginTop: 20, marginRight: 10, color: '#fff' }}>In English:</Text>
+            <Input onChangeText={this._handleTypingWordInEnglish} style={{ color: '#fff' }} />
+          </View>
+          <View style={{ flexDirection: 'row', paddingRight: 80, marginTop: 10 }}>
+            <Text style={{ fontSize: 16, marginTop: 20, marginRight: 10, color: '#fff' }}>Translation:</Text>
+            <Input onChangeText={this._handleTypingWordInNative} style={{ color: '#fff' }} />
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Button
+              icon={
+                <Icon
+                  name='check'
+                  size={15}
+                  color='white'
+                />
+              }
+              title='ADD'
+              buttonStyle={styles.addButton}
+              onPress={this._handlePressOnAddOnOverlay}
+            />
+            <Button
+              icon={
+                <Icon
+                  name='cancel'
+                  size={15}
+                  color='white'
+                />
+              }
+              title='CANCEL'
+              buttonStyle={styles.addButton}
+              onPress={this._handlePressOnCancel}
+            />
+          </View>
+        </View>
+
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           {
             this._getWordCards()
@@ -37,11 +77,11 @@ export default class HomeScreen extends React.Component {
         <Overlay isVisible={this.state.isVisible} overlayStyle={{ height: 340 }}>
           <View style={{ alignItems: 'center', flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
             <Text h2 style={{ fontSize: 22, marginTop: 10 }}>ADD NEW WORD</Text>
-            <Text style={{ fontSize: 18, marginTop: 30 }}>Add the new word in English</Text>
+            <Text style={{ fontSize: 18, marginTop: 30 }}>Add a word or a phrase in English</Text>
             <Input onChangeText={this._handleTypingWordInEnglish} />
             <Text style={{ fontSize: 18, marginTop: 30 }}>translate to your language</Text>
             <Input onChangeText={this._handleTypingWordInNative} />
-            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+            <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between' }}>
               <Button
                 icon={
                   <Icon
@@ -173,7 +213,7 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
   addButton: {
-    marginTop: 30,
+    marginTop: 10,
     borderRadius: 0,
     backgroundColor: "#698FF0",
     marginLeft: 15,
