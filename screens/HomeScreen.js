@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import { ListItem, Button, Overlay, Icon, Input, Divider, Header } from 'react-native-elements'
 
 import WordCard from '../components/WordCard';
+import NoItemsMessage from '../components/NoItemsMessage';
 
 export default class HomeScreen extends React.Component {
 
@@ -76,9 +77,13 @@ export default class HomeScreen extends React.Component {
   }
 
   _getWordCards() {
-    return this._getMockDictionary().map((word, i) => {
-      return <WordCard key={i} eng={word.eng} rus={word.rus}></WordCard>
-    });
+    if (this._getMockDictionary().length) {
+      return this._getMockDictionary().map((word, i) => {
+        return <WordCard key={i} eng={word.eng} rus={word.rus}></WordCard>
+      });
+    } else {
+      return <NoItemsMessage />;
+    }
   };
 
   _getMockDictionary() {
