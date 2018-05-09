@@ -4,6 +4,7 @@ import { ListItem, Button, Overlay, Icon, Input, Divider, Header } from 'react-n
 
 import WordCard from '../components/WordCard';
 import NoItemsMessage from '../components/NoItemsMessage';
+import WordStorage from '../services/WordStorage.js';
 
 export default class HomeScreen extends React.Component {
 
@@ -13,7 +14,7 @@ export default class HomeScreen extends React.Component {
       isVisible: false,
       wordInEnglish: "",
       wordInNative: "",
-      items: this._getMockDictionary()
+      items: new WordStorage().get()
     };
   }
 
@@ -73,50 +74,13 @@ export default class HomeScreen extends React.Component {
   }
 
   _getWordCards() {
-    if (this._getMockDictionary().length) {
-      return this._getMockDictionary().map((word, i) => {
+    if (this.state.items.length) {
+      return this.state.items.map((word, i) => {
         return <WordCard key={i} eng={word.eng} rus={word.rus}></WordCard>
       });
     } else {
       return <NoItemsMessage />;
     }
-  };
-
-  _getMockDictionary() {
-    return [
-      {
-        eng: "сat",
-        rus: "кошка"
-      },
-      {
-        eng: "dog",
-        rus: "собака"
-      },
-      {
-        eng: "mother",
-        rus: "мама"
-      },
-      {
-        eng: "father",
-        rus: "папа"
-      },
-      {
-        eng: "sister",
-        rus: "сестра"
-      },
-      {
-        eng: "brother",
-        rus: "брат"
-      },
-      {
-        eng: "apple",
-        rus: "яблоко"
-      }
-    ];
-  };
-
-  _getEmptyMockDictionary = () => {
-    return [];
   };
 
   _handlePressOnAdd = () => {
